@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "peer/ChaincodeID.proto";
+
+option java_multiple_files = true;
+option java_package = "cn.mrray.blockchain.grpc.peer";
+option java_outer_classname = "ChaincodePeerProto";
+package peer;
+
+
+message ChaincodePeerReply {
+    int32 code = 1;
+    string message = 2;
+    string payload = 3;
+}
+
+message ChaincodePeerRequst {
+    ChaincodeID chaincode_id = 1;
+    string method = 2;
+    string key = 3;
+    string payload = 4;
+}
+
+
+service ChaincodePeerService {
+  rpc getState (ChaincodePeerRequst) returns (ChaincodePeerReply) {}
+  rpc selectState (ChaincodePeerRequst) returns (ChaincodePeerReply) {}
+}

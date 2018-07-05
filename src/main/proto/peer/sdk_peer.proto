@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "peer/ChaincodeID.proto";
+
+option java_multiple_files = true;
+option java_package = "cn.mrray.blockchain.grpc.peer";
+option java_outer_classname = "SdkPeerProto";
+package peer;
+
+
+
+
+message SdkPeerReply {
+    int32 code = 1;
+    string message = 2;
+    string payload = 3;
+}
+
+message SdkPeerRequest {
+    ChaincodeID chaincode_id = 1;
+    string method = 2;
+    string payload = 3;
+    string channel_name = 4;
+    string user_name = 5;
+    string sign = 6;
+}
+
+message ChaincodeSpec {
+    ChaincodeID chaincode_id = 1;
+    string chaincode_input = 2;
+    string file_name = 3;
+    string user_name = 4;
+    string sign = 5;
+}
+
+//sdk访问peer的grpc通信服务
+service SdkPeerService {
+    //初始化链码
+  rpc initChaincode (ChaincodeSpec) returns (SdkPeerReply) {}
+    //停止链码
+  rpc stopChaincode (SdkPeerRequest) returns (SdkPeerReply) {}
+    //删除链码
+  rpc removeChaincode (SdkPeerRequest) returns (SdkPeerReply) {}
+    //处理用户定义的链码逻辑接口
+  rpc invoke (SdkPeerRequest) returns (SdkPeerReply) {}
+}

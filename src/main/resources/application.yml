@@ -1,0 +1,69 @@
+spring:
+  datasource:
+      url: jdbc:mysql://192.168.125.5:3306/blockchain_manager_124?autoReconnect=true&useUnicode=true&createDatabaseIfNotExist=true&characterEncoding=utf8&useSSL=false&serverTimezone=CTT
+      username: root
+      password: root20180315
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    generate-ddl: true
+    database: mysql
+    hibernate:
+      ddl-auto: create
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 1073741824MB
+      max-request-size: 1073741824MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization.write_dates_as_timestamps: true
+    time-zone: GMT+8
+
+logging:
+  file: ./logback.log
+  level:
+    org.tio: off
+
+
+
+server:
+  port: 8080
+
+name: nodezsc4
+appId: nodezsc4
+localIp: 192.168.125.124
+
+countPerBlock: 1000
+
+#1 rocksDB 2 couchDB
+DBconfig: 3
+
+# 1.pbft  2.raft
+sync-algorithm: 1
+
+ca.ip: 192.168.125.181
+ca.port: 50051
+
+sign:
+  algorithm: SM2 # 可选的有 RSA，SM2，ECDSA
+  sm2PriKey: AI2RJFqtFoFbtxKxbeOVLU0cb+QbxHnQcc/Tp1n8KvG/
+  rsaPriKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCFaiTSQPzI6ZejxdKAOxYec8uqvt11+kzG+pSkxaULfECv1QA7ILEntLggA81RoaadBDnTaYC391oDhtXyTlHYtB/zfVYpZEJQZvdQ7NKxUev8934Cs/ypynYUdUfJRIxkjspIzvi3rxiTP/SgwTl3Mt0RuNkH36kSbRTvfUvy1O8nY84gpMvsQdN69Oc5g8x9d3bWXr0CjNdPLOovqLM0OQrtwxh35P5UpAizd1c5vPnDRWi+Ez9RC0AJsTkYAD2d12nkHkkqbasLvAuEsoQTN+TKMcEvWVc70+pjWBttX1Qqkc8i0drDe2rHegItAvF7Nqqy2+/phiMzV0loTve7AgMBAAECggEAQ+hJIbPudx1fD/9LK/XnRkzOZ/SKqNhkaAt3yX7IiVYPXvBeE7qKMZms9q64vUo4kkdqX4+d8wW2DYF+OL1gr5rPgJJVXvAnSOGAFPLWM2dtZO9cdmfCvXHONI+VoH6Br1V25SRkOKqpKZouG/z+EQwUtkaOQZG4byaSt2vhUpIPbdbInO8wUvM5pYEtOiVSLKST97IeaczRehNMXgNVHXfstB+5a81qJB+17o81k6BV+xouKRBMtZgX/IVqExT//SW+aInRWu5Shvc61N22G/yRzkC4YSZUJNnxR/6m1AuXLBiKmTN0DknplaFWk8Pw9utHzEX/dM9O4aBzqjd8IQKBgQDBQsFqskLUE2k0hkjjcOpgDTY4Doy+qRbp7Wul/Ed4GdR7AsFzP7PT0KGUBku5ufpEnKy96mqkvlthLVbB+iRGEMv3jeoPDgkiYraLRcpGgcn+dJ5f6zuUT7EU39qc0ncnvP8RFdbhWC6EIXUgD1NUd93uRyoP8ZrVYIBzDdexUwKBgQCwucd/ea5Ji/vPjy4uVdFlyvWmA28KPsplemYfbj6A6vz8/C2jWcDMkfZv9lv6Tk7UETbm8BiaxfnarmOIImzF8WlaYBY4obanOY+/a4WCs2ASfGtI0RKfrEEdqwdhZCujB4W0wFwLeJugCG1vxoRe4Ar5a2uMqkek0AE8VwjK+QKBgQCsBR1gOTeeyYBVTknGmJUl1dyy3NCOTLemlLvCzOFYl7U3oOZMDSGlogiQV2JD+LQ5KjPf/63Y4c84mkCk/GAZNY431UvHBrk+sBrHsOExDQmcwnTN7/XiN2Tpra9K81M4PdPTg1r2zaTp21YDqWCEyQTzuMhJ1MX6s6DhyCp7HQKBgC0oK2vNQdWVKVDN+zTnxMvH4qD6+6KYjMsFTZb2ao4yfVZ/cYHt6y/alCfjwXjiDY5un6K+8uqJb+CK8u/ULAsgNpVbPBJYb/2m3a5B4SmWgBP5Ksi+c43NTA4yp34hRG0x/N5E0MA1nz5zKNOI3EYJ5YP6CM82q3vXkplCfAKxAoGAKzn9BnLlKkydV9AGsO7nQYaYD9cd1DM7n+xiwMETcNluZzTr2te6sVk1zEFsXy7PLubJfkYV60UFbE/eAyWVQncQs8iq9N+iNg6cJKvqwPOJy7TO9DDT+vE7Ujqy58D45/Ebj3EfJUwVSolCiGQzVaKgfD921lB8mGVSItg5O7c=
+  ecdsaPriKey: 1zHpPD2ctoXlmM8hESjbKPbZI3VcB3lbGiLTifwOA7Y=
+
+gossip:
+  cluster: mrray
+
+#  if you config node info will apply these config, if not config will auto config then output to log.
+#  node:
+#    id: node1
+#    host: 192.168.125.181
+#    port: 10000
+  seed:
+    id: seed1
+    host: 192.168.125.6
+    port: 10000
