@@ -12,6 +12,7 @@ import cn.mrray.blockchain.core.kafka.QueueTimmer;
 import cn.mrray.blockchain.core.socket.body.RpcBlockBody;
 import cn.mrray.blockchain.core.socket.client.PacketSender;
 import cn.mrray.blockchain.core.socket.packet.BlockPacket;
+import cn.mrray.blockchain.core.socket.packet.NextBlockPacketBuilder;
 import cn.mrray.blockchain.core.socket.packet.PacketBuilder;
 import cn.mrray.blockchain.core.socket.packet.PacketType;
 import com.alibaba.fastjson.JSON;
@@ -22,6 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -50,6 +53,8 @@ public class BlockManager {
     private BlockHeader blockHeader = block.getBlockHeader();
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    private File file = new File("./ms-block.txt");
 
 
     /**
@@ -156,9 +161,13 @@ public class BlockManager {
         return true;
     }
 
+
     void pbftSync(Block block) {
         initHeightSortOffset();
-        if (block.getBlockHeader().getNumber() != height.get()) {
+        if(block.getBlockBody().getInstructions().size()<=0){
+            return;
+        }
+        if (block.getBlockBody().getInstructions().get(0).getVersion().getBlockNum()!= height.get()) {
             logger.error("return  handleTransaction  getNumber " + block.getBlockHeader().getNumber() + " height" + height.get());
             //System.exit(0);
             return;
@@ -335,6 +344,10 @@ public class BlockManager {
     public boolean checkBlock(VoteBlock voteBlock) {
         initHeightSortOffset();
         if (voteBlock.getBlockHeader().getNumber() != height.get()) {
+            BlockPacket nextBlockPacket = NextBlockPacketBuilder.build();
+            if (nextBlockPacket != null) {
+                packetSender.sendGroup(nextBlockPacket);
+            }
             return false;
         }
         List<String> txHash = voteBlock.getTxHash();
@@ -395,6 +408,15 @@ public class BlockManager {
         if (QueueTimmer.isPbftWorking()) {
             AlgorithmManager.term.incrementAndGet();
             QueueTimmer.setPbftWorking(false);
+            try (FileWriter fileWriter = new FileWriter(file, true)) {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                fileWriter.write((System.currentTimeMillis() - QueueTimmer.getLastPack()) + "");
+                fileWriter.write("\r\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
